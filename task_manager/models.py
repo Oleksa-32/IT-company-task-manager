@@ -1,4 +1,4 @@
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractUser, Group, Permission
 from django.db import models
 
 
@@ -18,6 +18,16 @@ class TaskType(models.Model):
 
 class Worker(AbstractUser):
     position = models.ManyToManyField(Position)
+    groups = models.ManyToManyField(
+        Group,
+        related_name="worker_set",  # Custom related_name for groups
+        blank=True
+    )
+    user_permissions = models.ManyToManyField(
+        Permission,
+        related_name="worker_user_set",  # Custom related_name for user_permissions
+        blank=True
+    )
 
     class Meta:
         verbose_name = "worker"
