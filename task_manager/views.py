@@ -1,11 +1,11 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
-from django.urls import reverse_lazy
-from django.views import generic
-from django.views.generic import DeleteView, UpdateView
+from django.urls import reverse_lazy, reverse
 
-from task_manager.forms import WorkerSearchForm, WorkerCreationForm, WorkerPositionUpdateForm
-from task_manager.models import Worker, Task, Position
+from django.views import generic
+
+from task_manager.forms import WorkerSearchForm, WorkerCreationForm, WorkerPositionUpdateForm, TaskForm
+from task_manager.models import Worker, Task, Position, TaskType
 
 
 # Create your views here.
@@ -16,7 +16,7 @@ def index(request):
 
 class WorkerListView(generic.ListView):
     model = Worker  # Ensures a default queryset is used
-    paginate_by = 5
+    paginate_by = 10
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -70,42 +70,72 @@ class WorkerDeleteView(generic.DeleteView):
 
 class PositionListView(generic.ListView):
     model = Position
+    paginate_by = 5
     template_name = 'task_manager/position_list.html'
     context_object_name = 'position_list'
 
 class PositionCreateView(generic.CreateView):
     model = Position
     template_name = 'task_manager/position_form.html'
-    fields = ['name']  # Assuming "name" is the only field in the Position model
-    success_url = reverse_lazy("task_manager:worker-list")
+    fields = ['name']
+    success_url = reverse_lazy("task_manager:position-list")
 
 
 class PositionDetailView(generic.DetailView):
     model = Position
-    template_name = 'task_manager/position_detail.html'  # Path to the template
-    context_object_name = 'position'  # Name to reference the position object in the template
+    template_name = 'task_manager/position_detail.html'
+    context_object_name = 'position'
 
     def get_context_data(self, **kwargs):
         # Get the default context data
         context = super().get_context_data(**kwargs)
 
-        # Fetch the related workers and tasks associated with the position
-        position = self.get_object()  # This is the Position object from the URL
-        # context['workers'] = position.worker_set.all()  # Get workers assigned to this position
-        # context['tasks'] = position.task_set.all()  # Get tasks assigned to this position
+        position = self.get_object()
+        # context['workers'] = position.worker_set.all()
+        # context['tasks'] = position.task_set.all()
 
         return context
 
-class PositionDeleteView(DeleteView):
+class PositionDeleteView(generic.DeleteView):
     model = Position
-    success_url = reverse_lazy('task_manager:position-list')  # Redirect to a list of positions
+    success_url = reverse_lazy('task_manager:position-list')
     template_name = 'task_manager/position_confirm_delete.html'
 
-class PositionUpdateView(UpdateView):
+class PositionUpdateView(generic.UpdateView):
     model = Position
     fields = ['name']  # Include fields you want to edit
     template_name = 'task_manager/position_form.html'
-    success_url = reverse_lazy('task_manager:position-list')  # Redirect after update
+    success_url = reverse_lazy('task_manager:position-list')
+
+
+class TaskTypeListView(generic.ListView):
+    model = TaskType
+    paginate_by = 5
+    template_name = "task_manager/task_type_list.html"
+    context_object_name = "task_type_list"
+
+class TaskTypeDetailView(generic.DetailView):
+    model = TaskType
+    template_name = "task_manager/task_type_detail.html"
+    context_object_name = "task_type"
+
+class TaskTypeCreateView(generic.CreateView):
+    model = TaskType
+    template_name = "task_manager/task_type_form.html"
+    fields = ["name"]
+    success_url = reverse_lazy("task_manager:task-type-list")
+
+
+class TaskTypeDeleteView(generic.DeleteView):
+    model = TaskType
+    template_name = "task_manager/task_type_confirm_delete.html"
+    success_url = reverse_lazy("task_manager:task-type-list")
+
+class TaskTypeUpdateView(generic.UpdateView):
+    model = TaskType
+    template_name = "task_manager/task_type_form.html"
+    fields = ["name"]
+    success_url = reverse_lazy("task_manager:task-type-list")
 
 
 def toggle_task_assignment(request, worker_id, task_id):
@@ -119,3 +149,43 @@ def toggle_task_assignment(request, worker_id, task_id):
         task.assignees.add(worker)
 
     return redirect("task_manager:worker-detail", pk=worker.id)
+
+
+class TaskCreateView(generic.CreateView):
+    model = Task
+    form_class = TaskForm
+    template_name = 'task_manager/task_form.html'
+    context_object_name = 'form'
+    success_url = reverse_lazy('task_manager:task-list')
+
+
+class TaskDetailView(generic.DetailView):
+    model = Task
+    template_name = 'task_manager/task_detail.html'
+    context_object_name = 'task'
+
+
+class TaskListView(generic.ListView):
+    model = Task
+    paginate_by = 10
+    template_name = 'task_manager/task_list.html'
+    context_object_name = 'task_list'
+
+
+class TaskUpdateView(generic.UpdateView):
+    model = Task
+    form_class = TaskForm
+    success_url = reverse_lazy("task_manager:task-list")
+
+
+class TaskDeleteView(generic.DeleteView):
+    model = Task
+    success_url = reverse_lazy('task_manager:task-list')
+
+
+class TaskCompletionToggleView(generic.View):
+    def post(self, request, pk):
+        task = get_object_or_404(Task, pk=pk)
+        task.is_completed = not task.is_completed
+        task.save()
+        return redirect('task_manager:task-detail', pk=task.pk)

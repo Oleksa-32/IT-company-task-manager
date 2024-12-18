@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% load crispy_forms_filters %}
+
+{% block content %}
+  <h1>
+    {{ task_type.name }}
+    <a href="{% url 'task_manager:task-type-delete' pk=task_type.id %}" class="btn btn-danger link-to-page">
+      Delete
+    </a>
+    <a href="{% url 'task_manager:task-type-update' pk=task_type.id %}" class="btn btn-secondary link-to-page">
+      Update
+    </a>
+  </h1>
+
+  <h2>Tasks of This Type</h2>
+  {% if task_type.task_set.all %}
+    <ul>
+      {% for task in task_type.task_set.all %}
+        <li>
+          <a href="{% url 'task_manager:task-detail' pk=task.id %}">
+            {{ task.name }}
+          </a> - Priority: {{ task.priority }} (Deadline: {{ task.deadline }})
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>No tasks are associated with this task type.</p>
+  {% endif %}
+{% endblock %}

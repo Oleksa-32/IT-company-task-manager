@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.core.exceptions import ValidationError
-from .models import Worker, Task, Position
+from .models import Worker, Task, Position, TaskType
 
 
 class WorkerCreationForm(UserCreationForm):
@@ -35,6 +35,18 @@ class TaskForm(forms.ModelForm):
         widgets = {
             "assignees": forms.CheckboxSelectMultiple,
             "deadline": forms.DateInput(attrs={"type": "date"}),
+        }
+
+
+class TaskTypeForm(forms.ModelForm):
+    class Meta:
+        model = TaskType
+        fields = ["name"]  # Include the fields you want in the form
+        widgets = {
+            "name": forms.TextInput(attrs={"class": "form-control", "placeholder": "Enter Task Type Name"}),
+        }
+        labels = {
+            "name": "Task Type Name",
         }
 
 
