@@ -83,4 +83,26 @@ class PositionForm(forms.ModelForm):
 
 
 class PositionSearchForm(forms.Form):
-    query = forms.CharField(max_length=100, required=False, label="Search Workers")
+    name = forms.CharField(
+        max_length=255,
+        required=False,
+        label="",
+        widget=forms.TextInput(
+            attrs={
+                "placeholder": "Search by position name",
+            }
+        )
+    )
+
+
+class TaskTypeSearchForm(forms.Form):
+    name = forms.CharField(
+        max_length=255,
+        required=False,
+        label="",
+        widget=forms.TextInput(
+            attrs={
+                "placeholder": "Search by task type name",
+            }
+        )
+    )
