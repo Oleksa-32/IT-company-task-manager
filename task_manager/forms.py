@@ -79,7 +79,7 @@ class TaskSearchForm(forms.Form):
 class PositionForm(forms.ModelForm):
     class Meta:
         model = Position
-        fields = ['name']
+        fields = ["name"]
 
 
 class PositionSearchForm(forms.Form):

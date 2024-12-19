@@ -1,13 +1,13 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy, reverse
 
 from django.views import generic
 
-from task_manager.forms import WorkerSearchForm, WorkerCreationForm, WorkerPositionUpdateForm, TaskForm, TaskSearchForm, \
-    PositionSearchForm, TaskTypeSearchForm
+from task_manager.forms import (WorkerSearchForm, WorkerCreationForm,
+                            WorkerPositionUpdateForm, TaskForm, TaskSearchForm,
+                            PositionSearchForm, TaskTypeSearchForm)
 from task_manager.models import Worker, Task, Position, TaskType
 
 
@@ -51,7 +51,7 @@ class WorkerCreateView(LoginRequiredMixin, generic.CreateView):
 
 class WorkerUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Worker
-    form_class = WorkerPositionUpdateForm  # Or your specific update form
+    form_class = WorkerPositionUpdateForm
     success_url = reverse_lazy("task_manager:worker-list")
 
 
