@@ -17,12 +17,14 @@ def index(request):
     num_positions = Position.objects.count()
     num_tasks = Task.objects.count()
     num_task_types = TaskType.objects.count()
+    task_list = Task.objects.all()
 
     context = {
         "num_workers": num_workers,
         "num_positions": num_positions,
         "num_tasks": num_tasks,
         "num_task_types": num_task_types,
+        "task_list": task_list,
     }
 
     return render(request, "task_manager/index.html", context=context)
