@@ -9,9 +9,8 @@
     {{ form|crispy }}  <!-- Render the form using crispy-forms -->
 
     <div class="form-group">
-      <button type="submit" class="btn btn-primary">{{ object|yesno:"Update,Create" }} Task</button>
+      <button type="submit" class="btn btn-primary">{{ object|yesno:"Update,Create" }}</button>
     </div>
   </form>
 
-  <a href="{% url 'task_manager:task-list' %}" class="btn btn-secondary">Cancel</a>
 {% endblock %}

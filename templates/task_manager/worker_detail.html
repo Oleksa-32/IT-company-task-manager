@@ -40,27 +40,6 @@
     <p>No tasks assigned to this worker.</p>
   {% endif %}
 
-  <!-- Task Assignment Toggle Section -->
-  <h2>Toggle Task Assignment</h2>
 {% endblock %}
-<!--  {% for task in tasks %}-->
-<!--    <div>-->
-<!--      <strong>{{ task.name }}</strong> - Priority: {{ task.priority }} (Deadline: {{ task.deadline }})-->
-<!--      {% if worker in task.assignees.all %}-->
-<!--        &lt;!&ndash; Remove Worker from Task &ndash;&gt;-->
-<!--        <a href="{% url 'task_manager:toggle-task-assignment' worker_id=worker.id task_id=task.id %}"-->
-<!--           class="btn btn-danger btn-sm">-->
-<!--          Remove from task-->
-<!--        </a>-->
-<!--      {% else %}-->
-<!--        &lt;!&ndash; Assign Worker to Task &ndash;&gt;-->
-<!--        <a href="{% url 'task_manager:toggle-task-assignment' worker_id=worker.id task_id=task.id %}"-->
-<!--           class="btn btn-success btn-sm">-->
-<!--          Assign to task-->
-<!--        </a>-->
-<!--      {% endif %}-->
-<!--    </div>-->
-<!--  {% empty %}-->
-<!--    <p>No tasks available to assign.</p>-->
-<!--  {% endfor %}-->
+
 

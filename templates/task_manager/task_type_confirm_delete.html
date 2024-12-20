@@ -5,6 +5,7 @@
   <p>Are you sure you want to delete the task type "{{ tasktype.name }}"?</p>
   <form method="post">
     {% csrf_token %}
+
     <button type="submit" class="btn btn-danger">Confirm</button>
     <a href="{% url 'task_manager:task-type-detail' pk=tasktype.id %}" class="btn btn-secondary">Cancel</a>
   </form>

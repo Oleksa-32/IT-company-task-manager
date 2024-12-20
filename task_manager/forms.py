@@ -22,7 +22,13 @@ class WorkerCreationForm(UserCreationForm):
 class WorkerPositionUpdateForm(forms.ModelForm):
     class Meta:
         model = Worker
-        fields = ["position"]
+        fields = (
+            "username",
+            "first_name",
+            "last_name",
+            "email",
+            "position",
+        )
         widgets = {
             "position": forms.CheckboxSelectMultiple,
         }
@@ -44,9 +50,6 @@ class TaskTypeForm(forms.ModelForm):
         fields = ["name"]  # Include the fields you want in the form
         widgets = {
             "name": forms.TextInput(attrs={"class": "form-control", "placeholder": "Enter Task Type Name"}),
-        }
-        labels = {
-            "name": "Task Type Name",
         }
 
 
