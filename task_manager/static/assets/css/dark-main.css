@@ -1,0 +1,12 @@
+.container-fluid {
+    background-color: #212425;
+    color: #FFFFFF;
+}
+
+#sidenav-main {
+    background-color: #212425; /* Dark gray/blackish color */
+    color: #FFFFFF; /* White text for contrast */
+}
+body {
+    background-color: #212425; /* Dark gray/blackish color */
+}

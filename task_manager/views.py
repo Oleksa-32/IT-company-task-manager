@@ -13,11 +13,24 @@ from task_manager.models import Worker, Task, Position, TaskType
 
 @login_required
 def index(request):
-    return render(request, "task_manager/index.html")
+    num_workers = Worker.objects.count()
+    num_positions = Position.objects.count()
+    num_tasks = Task.objects.count()
+    num_task_types = TaskType.objects.count()
+
+    context = {
+        "num_workers": num_workers,
+        "num_positions": num_positions,
+        "num_tasks": num_tasks,
+        "num_task_types": num_task_types,
+    }
+
+    return render(request, "task_manager/index.html", context=context)
 
 
 class WorkerListView(LoginRequiredMixin, generic.ListView):
-    model = Worker  # Ensures a default queryset is used
+    model = Worker
+    template_name = "task_manager/worker_list.html"
     paginate_by = 10
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -30,7 +43,7 @@ class WorkerListView(LoginRequiredMixin, generic.ListView):
 
     def get_queryset(self):
         form = WorkerSearchForm(self.request.GET)
-        queryset = Worker.objects.all()  # Ensures queryset is defined
+        queryset = Worker.objects.all()
         if form.is_valid():
             return queryset.filter(username__icontains=form.cleaned_data["username"])
         return queryset
@@ -62,7 +75,7 @@ class WorkerDeleteView(LoginRequiredMixin, generic.DeleteView):
 
 class PositionListView(LoginRequiredMixin, generic.ListView):
     model = Position
-    paginate_by = 5
+    paginate_by = 3
     template_name = "task_manager/position_list.html"
     context_object_name = "position_list"
 

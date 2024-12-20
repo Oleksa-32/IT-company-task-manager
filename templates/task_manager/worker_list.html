@@ -1,38 +1,96 @@
-{% extends "base.html" %}
-{% load crispy_forms_filters %}
+{% extends 'layouts/base.html' %}
+
+{% block title %} Tables {% endblock title %}
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %}
 
 {% block content %}
-  <h1>
-    Worker List
-    <a href="{% url 'task_manager:worker-create' %}" class="btn btn-primary link-to-page">
-      Create
-    </a>
-  </h1>
 
-  <form method="get" action="" class="form-inline">
-    {{ search_form|crispy }}
-    <input class="btn btn-secondary" type="submit" value="🔍">
-  </form>
+    <div class="container-fluid py-4">
 
-  {% if worker_list %}
-    <ul>
-      {% for worker in worker_list %}
-        <li>
-          <!-- Redirect to worker_detail view when clicking worker's name -->
-          <a href="{% url 'task_manager:worker-detail' pk=worker.id %}">
-            {{ worker.username }}
-          </a>
-          - {{ worker.first_name }} {{ worker.last_name }}<br>
-          Positions:
-          {% for position in worker.position.all %}
-            {{ position.name }}{% if not forloop.last %}, {% endif %}
-          {% empty %}
-            No positions assigned
-          {% endfor %}
-        </li>
-      {% endfor %}
-    </ul>
-  {% else %}
-    <p>There are no workers available.</p>
-  {% endif %}
-{% endblock %}
+      <div class="row">
+        <div class="col-12">
+          <div class="card mb-4">
+            <div class="card-header pb-0">
+              <h6>Workers table</h6>
+            </div>
+            <div class="col-3 py-3 ps-0">
+                <a href="{% url 'task_manager:worker-create' %}" class="btn btn-primary link-to-page">
+                  Create
+                </a>
+            </div>
+            <div class="card-body px-0 pt-0 pb-2">
+              <div class="table-responsive p-0">
+                <table class="table align-items-center mb-0">
+                  <thead>
+                    <tr>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Worker</th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Position</th>
+                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">First Name</th>
+                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Last Name</th>
+                      <th class="text-secondary opacity-7"></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% if worker_list %}
+                      {% for worker in worker_list %}
+                        <tr>
+                          <td>
+                            <div class="d-flex px-2 py-1">
+                              <div class="d-flex flex-column justify-content-center">
+                                <!-- Redirect to worker_detail view when clicking worker's name -->
+                                <h6 class="mb-0 text-sm">
+                                  <a href="{% url 'task_manager:worker-detail' pk=worker.id %}">
+                                    {{ worker.username }}
+                                  </a>
+                                </h6>
+                                <p class="text-xs text-secondary mb-0">{{ worker.first_name }} {{ worker.last_name }}</p>
+                              </div>
+                            </div>
+                          </td>
+                          <td>
+                            <p class="text-xs text-secondary mb-0">
+                              {% for position in worker.position.all %}
+                                {{ position.name }}{% if not forloop.last %}, {% endif %}
+                              {% empty %}
+                                No positions assigned
+                              {% endfor %}
+                            </p>
+                          </td>
+                          <td class="align-middle text-center text-sm">{{ worker.first_name }}</td>
+                          <td class="align-middle text-center">
+                            <span class="text-secondary text-xs font-weight-bold">{{ worker.last_name }}</span>
+                          </td>
+                          <td class="align-middle">
+                            <a href="{% url 'task_manager:worker-update' pk=worker.id %}" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit worker">
+                              Edit
+                            </a>
+                          </td>
+                        </tr>
+                      {% endfor %}
+                    {% else %}
+                      <tr>
+                        <td colspan="5" class="text-center">
+                          <p class="text-secondary text-sm mb-0">There are no workers available.</p>
+                        </td>
+                      </tr>
+                    {% endif %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      </div>
+
+
+    </div>
+    
+{% endblock content %}
+
+<!-- Specific JS goes HERE --> 
+{% block javascripts %}{% endblock javascripts %}

@@ -1,41 +1,78 @@
-{% extends "base.html" %}
-{% load crispy_forms_filters %}
+{% extends 'layouts/base.html' %}
+
+{% block title %} Tables {% endblock title %}
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %}
 
 {% block content %}
-  <h1>
-    Task List
-    <a href="{% url 'task_manager:task-create' %}" class="btn btn-primary link-to-page">
-      Create New Task
-    </a>
-  </h1>
-
-  <form method="get" action="" class="form-inline">
-    {{ search_form|crispy }}
-    <input class="btn btn-secondary" type="submit" value="🔍">
-  </form>
-
-  {% if task_list %}
-    <ul>
-      {% for task in task_list %}
-        <li>
-          <!-- Redirect to task_detail view when clicking task name -->
-          <a href="{% url 'task_manager:task-detail' pk=task.id %}">
-            {{ task.name }}
+<div class="container-fluid py-4">
+  <div class="row">
+    <div class="col-12">
+      <div class="card mb-4">
+        <div class="card-header pb-0">
+          <h6>Tasks Table</h6>
+        </div>
+        <div class="col-3 py-3 ps-0">
+          <a href="{% url 'task_manager:task-create' %}" class="btn btn-primary link-to-page">
+            Create Task
           </a>
-          - Priority: {{ task.priority }} (Deadline: {{ task.deadline }})<br>
-          Assigned Workers:
-          {% for worker in task.assignees.all %}
-            <a href="{% url 'task_manager:worker-detail' pk=worker.id %}">
-              {{ worker.username }}
-            </a>{% if not forloop.last %}, {% endif %}
-          {% empty %}
-            No workers assigned
-          {% endfor %}
+        </div>
+        <div class="card-body px-0 pt-0 pb-2">
+          <div class="table-responsive p-0">
+            <table class="table align-items-center mb-0">
+              <thead>
+                <tr>
+                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Task</th>
+                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Deadline</th>
+                  <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Task Type</th>
+                  <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Priority</th>
+                  <th class="text-secondary opacity-7"></th>
+                </tr>
+              </thead>
+              <tbody>
+                {% if task_list %}
+                  {% for task in task_list %}
+                    <tr>
+                      <td>
+                        <h6 class="mb-0 text-sm">
+                          <a href="{% url 'task_manager:task-detail' pk=task.id %}">
+                            {{ task.name }}
+                          </a>
+                        </h6>
+                      </td>
+                      <td>
+                        <p class="text-xs text-secondary mb-0">{{ task.deadline|date:"d/m/Y" }}</p>
+                      </td>
+                      <td class="text-center">
+                        <p class="text-xs text-secondary mb-0">{{ task.task_type }}</p>
+                      </td>
+                      <td class="text-center">
+                        <p class="text-xs text-secondary mb-0">{{ task.priority }}</p>
+                      </td>
+                      <td class="align-middle">
+                        <a href="{% url 'task_manager:task-update' pk=task.id %}" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit task">
+                          Edit
+                        </a>
+                      </td>
+                    </tr>
+                  {% endfor %}
+                {% else %}
+                  <tr>
+                    <td colspan="5" class="text-center">
+                      <p class="text-secondary text-sm mb-0">There are no tasks available.</p>
+                    </td>
+                  </tr>
+                {% endif %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}
 
-        </li>
-      {% endfor %}
-    </ul>
-  {% else %}
-    <p>There are no tasks available.</p>
-  {% endif %}
-{% endblock %}
+<!-- Specific JS goes HERE -->
+{% block javascripts %}{% endblock javascripts %}
