@@ -1,0 +1,71 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %} Tables {% endblock title %}
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+<div class="container-fluid py-4">
+  <div class="row">
+    <div class="col-12">
+      <div class="card mb-4">
+        <div class="card-header pb-0">
+          <h6>Positions Table</h6>
+        </div>
+        <div class="col-3 py-3 ps-0">
+          <a href="{% url 'task_manager:position-create' %}" class="btn btn-primary link-to-page">
+            Create
+          </a>
+        </div>
+        <div class="card-body px-0 pt-0 pb-2">
+          <div class="table-responsive p-0">
+            <table class="table align-items-center mb-0">
+              <thead>
+                <tr>
+                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Name</th>
+
+                  <th class="text-secondary opacity-7"></th>
+                </tr>
+              </thead>
+                <tbody>
+                  {% if position_list %}
+                    {% for position in position_list %}
+                      <tr>
+                        <td>
+                          <div class="d-flex px-2 py-1">
+                            <div class="d-flex flex-column justify-content-center">
+                              <h6 class="mb-0 text-sm">
+                                <a href="{% url 'task_manager:position-detail' pk=position.id %}">
+                                  {{ position.name }}
+                                </a>
+                              </h6>
+                            </div>
+                          </div>
+                        </td>
+                        <td class="align-middle">
+                          <a href="{% url 'task_manager:position-update' pk=position.id %}" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit position">
+                            Edit
+                          </a>
+                        </td>
+                      </tr>
+                    {% endfor %}
+                  {% else %}
+                    <tr>
+                      <td colspan="2" class="text-center">
+                        <p class="text-secondary text-sm mb-0">There are no positions available.</p>
+                      </td>
+                    </tr>
+                  {% endif %}
+                </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}
+
+<!-- Specific JS goes HERE -->
+{% block javascripts %}{% endblock javascripts %}

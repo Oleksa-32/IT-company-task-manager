@@ -1,0 +1,45 @@
+{% extends "base2.html" %}
+{% load crispy_forms_filters %}
+
+{% block content %}
+  <h1>
+    {{ worker.username }} ({{ worker.first_name }} {{ worker.last_name }})
+    <a href="{% url 'task_manager:worker-delete' pk=worker.id %}" class="btn btn-danger link-to-page">
+      Delete
+    </a>
+    <a href="{% url 'task_manager:worker-update' pk=worker.id %}" class="btn btn-secondary link-to-page">
+      Update
+    </a>
+  </h1>
+
+  <h2>Worker Details</h2>
+  <p><strong>Full Name:</strong> {{ worker.first_name }} {{ worker.last_name }}</p>
+  <p><strong>Email:</strong> {{ worker.email }}</p>
+
+  <!-- Positions Section -->
+  <h2>Positions</h2>
+  <ul>
+    {% for position in worker.position.all %}
+      <li>{{ position.name }}</li>
+    {% empty %}
+      <li>No positions assigned</li>
+    {% endfor %}
+  </ul>
+
+  <!-- Assigned Tasks Section -->
+  <h2>Assigned Tasks</h2>
+  {% if worker.task_set.all %}
+    <ul>
+      {% for task in worker.task_set.all %}
+        <li>
+          {{ task.name }} - Priority: {{ task.priority }} (Deadline: {{ task.deadline }})
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>No tasks assigned to this worker.</p>
+  {% endif %}
+
+{% endblock %}
+
+

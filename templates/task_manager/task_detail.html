@@ -1,0 +1,51 @@
+{% extends "base2.html" %}
+{% load crispy_forms_filters %}
+
+{% block content %}
+  <h1>
+    {{ task.name }} -
+    <span class="badge badge-{{ task.priority|lower }}">{{ task.priority }}</span>
+  </h1>
+
+  <h2>Task Details</h2>
+  <p><strong>Task Name:</strong> {{ task.name }}</p>
+  <p><strong>Priority:</strong> {{ task.priority }}</p>
+  <p><strong>Deadline:</strong> {{ task.deadline }}</p>
+  <p><strong>Description:</strong> {{ task.description }}</p>
+  <p><strong>Task Type:</strong> {{ task.task_type.name }}</p>
+
+  <!-- Assigned Workers Section -->
+  <h3>Assigned Workers</h3>
+  {% if task.assignees.all %}
+    <ul>
+      {% for worker in task.assignees.all %}
+        <li>
+          {{ worker.username }} - {{ worker.first_name }} {{ worker.last_name }}
+          <a href="{% url 'task_manager:worker-detail' pk=worker.id %}" class="btn btn-info">View Worker</a>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>No workers assigned to this task.</p>
+  {% endif %}
+
+  <!-- Task Completion Toggle Section -->
+  <h3>Mark Task as Completed</h3>
+  <form method="post" action="{% url 'task_manager:task-completion-toggle' pk=task.id %}">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-warning">
+      {% if task.is_completed %}
+        Mark as Incomplete
+      {% else %}
+        Mark as Completed
+      {% endif %}
+    </button>
+  </form>
+
+
+  <a href="{% url 'task_manager:task-update' pk=task.id %}" class="btn btn-secondary">Update Task</a>
+  <a href="{% url 'task_manager:task-delete' pk=task.id %}" class="btn btn-danger link-to-page">
+      Delete Task
+    </a>
+
+{% endblock %}
