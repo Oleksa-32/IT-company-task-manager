@@ -134,7 +134,11 @@
           {% for task in task_list %}
             <div class="timeline-block mb-3">
               <span class="timeline-step">
-                <i class="ni ni-bell-55 text-success text-gradient"></i>
+                {% if task.is_completed %}
+                  <i class="ni ni-check-bold text-success text-gradient"></i>
+                {% else %}
+                  <i class="ni ni-bell-55 text-warning text-gradient"></i>
+                {% endif %}
               </span>
               <div class="timeline-content">
                 <h6 class="text-dark text-sm font-weight-bold mb-0">
@@ -154,7 +158,9 @@
               <i class="ni ni-bell-55 text-danger text-gradient"></i>
             </span>
             <div class="timeline-content">
-              <p class="text-secondary font-weight-bold text-xs mb-0">There are no tasks available.</p>
+              <p class="text-secondary font-weight-bold text-xs mb-0">
+                There are no tasks available.
+              </p>
             </div>
           </div>
         {% endif %}
