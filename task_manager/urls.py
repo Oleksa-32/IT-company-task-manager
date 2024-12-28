@@ -2,8 +2,8 @@ from django.urls import path
 
 from .forms import WorkerPositionUpdateForm
 from .views import (
-    index, WorkerListView, WorkerDetailView, WorkerCreateView, WorkerDeleteView,
-    PositionListView, PositionCreateView, PositionDetailView, toggle_task_assignment, WorkerUpdateView,
+    IndexView, WorkerListView, WorkerDetailView, WorkerCreateView, WorkerDeleteView,
+    PositionListView, PositionCreateView, PositionDetailView, ToggleTaskAssignmentView, WorkerUpdateView,
     PositionDeleteView, PositionUpdateView, TaskTypeCreateView, TaskTypeDetailView, TaskTypeDeleteView,
     TaskTypeListView, TaskTypeUpdateView, TaskDetailView, TaskUpdateView, TaskCompletionToggleView, TaskListView,
     TaskCreateView, TaskDeleteView,
@@ -11,7 +11,7 @@ from .views import (
 
 urlpatterns = [
 
-    path("", index, name="index"),
+    path("", IndexView.as_view(), name="index"),
     path("workers/", WorkerListView.as_view(), name="worker-list"),
     path("workers/<int:pk>/", WorkerDetailView.as_view(), name="worker-detail"),
 
@@ -19,7 +19,7 @@ urlpatterns = [
     path("worker/<int:pk>/update/", WorkerUpdateView.as_view(), name="worker-update"),
     path(
         "workers/<int:worker_id>/tasks/<int:task_id>/toggle-assignment/",
-        toggle_task_assignment,
+        ToggleTaskAssignmentView.as_view(),
         name="toggle-task-assignment",
     ),
     path(
