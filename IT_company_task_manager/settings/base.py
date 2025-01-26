@@ -112,7 +112,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = "static/"
-STATIC_ROOT = "task_manager/staticfiles/"
+STATIC_ROOT = BASE_DIR / "task_manager/staticfiles/"
 
 STATICFILES_DIRS = [
     BASE_DIR / "task_manager/static",  # Ensure BASE_DIR is defined correctly
