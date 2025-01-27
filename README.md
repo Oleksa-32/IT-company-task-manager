@@ -1,5 +1,7 @@
 # IT-company-task-manager
 
+https://it-company-task-manager-hvrc.onrender.com/
+
 Welcome to the **Django Task Manager** project! This application helps you and your team (developers, designers, project managers, QA specialists, etc.) manage tasks effectively, without needing third-party tools like Trello or ClickUp. It allows every team member to create new tasks, assign them to others, and mark them as completed before the deadline.
 
 
